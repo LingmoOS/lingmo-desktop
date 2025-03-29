@@ -52,10 +52,10 @@ Item {
             _folderView.currentIndex = dirModel.currentIndex
         }
 
-        onChangeIconSize: {
-            _folderView.iconSize = size
-            globalSettings.desktopIconSize = size
-        }
+        // onChangeIconSize: {
+        //     _folderView.iconSize = size
+        //     globalSettings.desktopIconSize = size
+        // }
     }
 
     FM.ItemViewAdapter {
