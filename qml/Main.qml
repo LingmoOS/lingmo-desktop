@@ -51,6 +51,11 @@ Item {
         onCurrentIndexChanged: {
             _folderView.currentIndex = dirModel.currentIndex
         }
+
+        onChangeIconSize: {
+            _folderView.iconSize = size
+            globalSettings.desktopIconSize = size
+        }
     }
 
     FM.ItemViewAdapter {
@@ -78,19 +83,8 @@ Item {
         focus: true
         model: dirModel
 
-        // Label {
-        //     text: qsTr("-\nSwift GNU/Linux \nOS Type: GNU/Linux  \nType: Beta  \nhttps://swifts.org.cn \nhttps://bbs.swifts.org.cn \nhttps://gitee.com/open-swift")
-        //     Layout.fillWidth: true
-        //     wrapMode: Text.Wrap
-        //     color: "#FFFFFF"
-        //     width: parent.width
-        //     height: parent.height
-        //     font.pixelSize: 20
-        //     font.bold: false
-        //     font.family: "Ubuntu"
-        //     verticalAlignment: Text.AlignButton
-        //     horizontalAlignment: Text.AlignRight
-        // }
+        cellWidth: iconSize + 32
+        cellHeight: iconSize + 48
 
         ScrollBar.vertical.policy: ScrollBar.AlwaysOff
 
@@ -106,9 +100,9 @@ Item {
 
         delegate: FolderGridItem {}
 
-        onIconSizeChanged: {
-            globalSettings.desktopIconSize = _folderView.iconSize
-        }
+        // onIconSizeChanged: {
+        //     globalSettings.desktopIconSize = _folderView.iconSize
+        // }
 
         onActiveFocusChanged: {
             if (!activeFocus) {
@@ -119,6 +113,16 @@ Item {
 
         Component.onCompleted: {
             dirModel.requestRename.connect(rename)
+        }
+
+        Connections {
+            target: dirModel
+            function onChangeIconSize(size) {
+                var newSize = Math.min(Math.max(size, minimumIconSize), maximumIconSize)
+                iconSize = newSize
+                cellWidth = newSize + 32
+                cellHeight = newSize + 48
+            }
         }
     }
 

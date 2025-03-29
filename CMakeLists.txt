@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(desktop LANGUAGES CXX)
+project(lingmo-desktop LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -19,7 +19,7 @@ find_package(KF5Solid)
 find_package(KF5WindowSystem)
 find_package(KF5Config)
 
-add_executable(ling-desktop
+add_executable(lingmo-desktop
   main.cpp
   desktop.cpp
 
@@ -33,7 +33,7 @@ add_executable(ling-desktop
   ${DBUS_SOURCES}
 )
 
-target_link_libraries(ling-desktop
+target_link_libraries(lingmo-desktop
   PRIVATE
   Qt5::Core
   Qt5::DBus
@@ -49,9 +49,13 @@ target_link_libraries(ling-desktop
 )
 
 file(GLOB TS_FILES translations/*.ts)
-qt5_create_translation(QM_FILES ${TS_FILES})
-add_custom_target(translations DEPENDS ${QM_FILES} SOURCES ${TS_FILES})
-add_dependencies(ling-desktop translations)
+foreach(filepath ${TS_FILES})
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/" "" filename ${filepath})
+    list(APPEND ts_files_replaced ${filename})
+endforeach()
+qt5_create_translation(QM_FILES ${CMAKE_CURRENT_SOURCE_DIR} ${ts_files_replaced})
 
-install(TARGETS ling-desktop RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(FILES ${QM_FILES} DESTINATION /usr/share/ling-desktop/translations)
+add_custom_target(translations ALL DEPENDS ${QM_FILES} SOURCES ${ts_files_replaced})
+
+install(TARGETS lingmo-desktop RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(FILES ${QM_FILES} DESTINATION /usr/share/lingmo-desktop/translations)

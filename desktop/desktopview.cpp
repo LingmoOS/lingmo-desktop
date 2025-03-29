@@ -19,7 +19,7 @@
 
 #include "desktopview.h"
 #include "dockdbusinterface.h"
-#include "../thumbnailer/thumbnailprovider.h"
+#include "thumbnailer/thumbnailprovider.h"
 
 #include <QQmlEngine>
 #include <QQmlContext>
@@ -35,12 +35,14 @@ DesktopView::DesktopView(QScreen *screen, QQuickView *parent)
     , m_screen(screen)
 {
     m_screenRect = m_screen->geometry();
-
+    this->setFlag(Qt::FramelessWindowHint);
+    this->setColor(QColor(Qt::transparent));
     KWindowSystem::setType(winId(), NET::Desktop);
     KWindowSystem::setState(winId(), NET::KeepBelow);
 
     engine()->rootContext()->setContextProperty("desktopView", this);
     engine()->rootContext()->setContextProperty("Dock", DockDBusInterface::self());
+    QWindow::fromWinId(winId())->setOpacity(0.99);
     engine()->addImageProvider("thumbnailer", new ThumbnailProvider());
 
     setTitle(tr("Desktop"));
@@ -68,8 +70,8 @@ void DesktopView::onPrimaryScreenChanged(QScreen *screen)
 
     onGeometryChanged();
 
-    setSource(isPrimaryScreen ? QStringLiteral("qrc:/qml/Main.qml")
-                              : QStringLiteral("qrc:/qml/Wallpaper.qml"));
+    setSource(isPrimaryScreen ? QStringLiteral("qrc:/qml/Desktop/Main.qml")
+                              : QStringLiteral("qrc:/qml/Desktop/Wallpaper.qml"));
 }
 
 void DesktopView::onGeometryChanged()

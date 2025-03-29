@@ -53,9 +53,19 @@ LingmoUI.Window {
         spacing: LingmoUI.Units.largeSpacing
 
         Label {
-            text: qsTr("Do you want to delete it permanently?")
+            text: fileCount === 1 ? qsTr("Are you sure you want to permanently delete \"%1\"?")
+                                   .arg(urls[0].toString().split('/').pop())
+                                 : qsTr("Are you sure you want to permanently delete %1 files?")
+                                   .arg(fileCount)
             Layout.fillWidth: true
             wrapMode: Text.Wrap
+        }
+
+        Label {
+            text: qsTr("Once deleted, these files cannot be recovered.")
+            Layout.fillWidth: true
+            wrapMode: Text.Wrap
+            color: LingmoUI.Theme.disabledTextColor
         }
 
         RowLayout {
@@ -79,4 +89,4 @@ LingmoUI.Window {
             }
         }
     }
-}
+} 

@@ -22,12 +22,11 @@
 
 #include <QObject>
 #include <QDBusInterface>
-#include <QDBusConnection>
-#include <QDBusMessage>
 
 class DesktopSettings : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString version READ version CONSTANT)
     Q_PROPERTY(QString wallpaper READ wallpaper NOTIFY wallpaperChanged)
     Q_PROPERTY(bool dimsWallpaper READ dimsWallpaper NOTIFY dimsWallpaperChanged)
     Q_PROPERTY(bool backgroundVisible READ backgroundVisible NOTIFY backgroundVisibleChanged)
@@ -42,6 +41,7 @@ public:
     bool backgroundVisible() const;
     int backgroundType() const;
     QString backgroundColor() const;
+    QString version();
 
     Q_INVOKABLE void launch(const QString &command, const QStringList &args);
 
@@ -51,7 +51,7 @@ signals:
     void backgroundColorChanged();
     void backgroundTypeChanged();
     void backgroundVisibleChanged();
-
+    
 private slots:
     void init();
     void onWallpaperChanged(QString);
@@ -59,6 +59,7 @@ private slots:
 private:
     QDBusInterface m_interface;
     QString m_wallpaper;
+    QString m_currentVersion;
 };
 
 #endif // SETTINGS_H
