@@ -30,7 +30,7 @@ Depends: qml-module-qtquick-controls2,
          qml-module-qtquick-shapes,
          qml-module-qtquick-dialogs,
          qml-module-qtgraphicaleffects,
-         libcute,
+         liblingmo,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: Lingmo OS Desktop.
