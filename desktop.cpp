@@ -35,7 +35,7 @@ Desktop::Desktop(int& argc, char** argv)
     setApplicationName("lingmo-desktop");
 
     QLocale locale;
-    QString qmFilePath = QString("%1/%2.qm").arg("/usr/share/ling-filemanager/translations/").arg(locale.name());
+    QString qmFilePath = QString("%1/%2.qm").arg("/usr/share/lingmo-filemanager/translations/").arg(locale.name());
     if (QFile::exists(qmFilePath)) {
         QTranslator *translator = new QTranslator(this);
         if (translator->load(qmFilePath)) {
